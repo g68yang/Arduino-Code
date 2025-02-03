@@ -31,7 +31,19 @@ void setup(){ // code that only runs once
   Serial.begin(9600);
 }
 
+// Function to handle incoming data from the Raspberry Pi
+void receiveDataFromPi() {
+  if (Serial.available() > 0) {
+    msgPi = Serial.readStringUntil('\n');  // Read the incoming message
+    msgPi = msgPi + " " + String(tag);     // Add a tag for identification
+    tag++;
+    Serial.println("Received: " + msgPi); // Echo the received message back
+  }
+}
+
 void loop(){ // code that loops forever
+  receiveDataFromPi();
+
   // power on sensor and wait briefly
   digitalWrite(sensorpower,HIGH);
   delay(10);
